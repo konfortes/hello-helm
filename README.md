@@ -14,3 +14,25 @@ helm package source-charts/*
 ```bash
 helm repo index --url https://konfortes.github.io/hello-helm/ .
 ```
+
+## Configure the Client
+
+```bash
+helm repo add konfortes https://konfortes.github.io/hello-helm
+```
+
+## Adding More Charts
+
+After packaging:
+
+```bash
+helm repo index --url https://konfortes.github.io/hello-helm/ --merge index.yaml .
+```
+
+## Consume Charts from This Repo
+
+```bash
+helm repo add konfortes https://konfortes.github.io/hello-helm
+
+helm install my-http-service konfortes/http-service
+```
