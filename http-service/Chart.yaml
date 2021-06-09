@@ -1,0 +1,12 @@
+apiVersion: v2
+name: http-service
+version: 0.0.1
+description: a generic http-service chart
+type: application
+keywords:
+  - http
+  - service
+maintainers:
+  - name: Ronen Konfortes
+    email: konfortes@gmail.com
+appVersion: "1.0.0"
