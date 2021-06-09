@@ -1,0 +1,20 @@
+apiVersion: v1
+entries:
+  http-service:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2021-06-09T16:48:06.300398+03:00"
+    description: a generic http-service chart
+    digest: 0e6d69ea6584de9fced0e016f65990a33d3b2c40af49c76d9bf90332ef208fac
+    keywords:
+    - http
+    - service
+    maintainers:
+    - email: konfortes@gmail.com
+      name: Ronen Konfortes
+    name: http-service
+    type: application
+    urls:
+    - https://konfortes.github.io/hello-helm/http-service-0.0.1.tgz
+    version: 0.0.1
+generated: "2021-06-09T16:48:06.299705+03:00"
