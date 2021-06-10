@@ -1,0 +1,3 @@
+http-service:
+  image:
+    tag: latest

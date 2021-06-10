@@ -6,7 +6,7 @@ It is used as a Helm repo using Github pages.
 ## Package the chart
 
 ```bash
-helm package source-charts/*
+helm package -d http-service source-charts/http-service
 ```
 
 ## Index
@@ -35,4 +35,10 @@ helm repo index --url https://konfortes.github.io/hello-helm/ --merge index.yaml
 helm repo add konfortes https://konfortes.github.io/hello-helm
 
 helm install my-http-service konfortes/http-service
+```
+
+## Run Presentation
+
+```bash
+
 ```
