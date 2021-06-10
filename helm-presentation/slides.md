@@ -1,9 +1,7 @@
 ---
 # try also 'default' to start simple
 theme: seriph
-# random image from a curated Unsplash collection by Anthony
-# like them? see https://unsplash.com/collections/94734566/slidev
-background: https://helm.sh/img/helm.svg
+background: https://dashboard.snapcraft.io/site_media/appmedia/2017/06/helm.png
 # apply any windi css classes to the current slide
 class: 'text-center'
 # https://sli.dev/custom/highlighters.html
@@ -16,20 +14,15 @@ info: |
   Learn more at [Sli.dev](https://sli.dev)
 ---
 
-# Welcome to Slidev
+# Helm
 
-Presentation slides for developers
+Package Manager for Kubernetes
 
 <div class="pt-12">
   <span @click="$slidev.nav.next" class="px-2 p-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-    Press Space for next page <carbon:arrow-right class="inline"/>
+    Let's Start <carbon:arrow-right class="inline"/>
   </span>
 </div>
-
-<a href="https://github.com/slidevjs/slidev" target="_blank" alt="GitHub"
-  class="abs-br m-6 text-xl icon-btn opacity-50 !border-none !hover:text-white">
-  <carbon-logo-github />
-</a>
 
 <!--
 The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
@@ -37,162 +30,89 @@ The last comment block of each slide will be treated as slide notes. It will be 
 
 ---
 
-# What is Slidev?
+# What is Helm?
 
-Slidev is a slides maker and presenter designed for developers, consist of the following features
+Helm is a Kubernetes package manager
 
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - theme can be shared and used with npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embedding Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export into PDF, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - anything possible on a webpage
-
-<br>
-<br>
-
-Read more about [Why Slidev?](https://sli.dev/guide/why)
-
-<!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/guide/syntax#embedded-styles
--->
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
+<ul>
+  <li v-click=1><b>Install & Uninstall</b> - install and uninstall packages</li>
+  <li v-click=2><b>Versioning</b> - Packages versioning management</li>
+  <li v-click=3><b>Dependencies</b> - Manage dependencies</li>
+</ul>
 
 ---
 
-# Navigation
+# Terminology
 
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/navigation.html)
+### Chart
 
-### Keyboard Shortcuts
+Bundled, versioned kubernetes manifests (Python package)
 
-|     |     |
-| --- | --- |
-| <kbd>right</kbd> / <kbd>space</kbd>| next animation or slide |
-| <kbd>left</kbd> | previous animation or slide |
-| <kbd>up</kbd> | previous slide |
-| <kbd>down</kbd> | next slide |
+### Helm Client
 
-<!-- https://sli.dev/guide/animations.html#click-animations -->
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
+Interacts with remote repos and K8S cluster in order to manage charts and chart releases (pip)
+
+### Chart Repo
+
+A simple server that stores packaged charts. Those charts can be retrieved by the Helm client ((PyPI))
+
+### Release
+
+An instance of a chart, deployed in K8S
+
+### Release Revision
+
+An update to a current release without installing a new chart version
 
 ---
-layout: image-right
-image: https://source.unsplash.com/collection/94734566/1920x1080
----
 
-# Code
+# Chart
 
-Use code snippets and get the highlighting directly!
+<img src="chart.png" width="300" height="300">
+<br/>
+<br/>
+<br/>
 
-<!-- https://sli.dev/guide/syntax.html#line-highlighting -->
-
-```ts {all|2|1-6|9|all}
-interface User {
-  id: number
-  firstName: string
-  lastName: string
-  role: string
-}
-
-function updateUser(id: number, update: User) {
-  const user = getUser(id)
-  const newUser = {...user, ...update}  
-  saveUser(id, newUser)
-}
+```yaml {all|2|3|4|5|all}
+# Chart.yaml
+apiVersion: v2
+name: http-service
+version: 0.1.0
+dependencies: 
+...
 ```
 
-<arrow v-click="3" x1="400" y1="420" x2="230" y2="330" color="#564" width="3" arrowSize="1" />
-
 ---
 
-# Components
+# Helm Template
 
-<div grid="~ cols-2 gap-4">
-<div>
+```yaml {all|1-16|19-22|9|21|11|22|all}
+# my-chart/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-svc
+  labels:
+    {{- include "http-service.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "http-service.selectorLabels" . | nindent 4 }}
 
-You can use Vue components directly inside your slides.
 
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
+# my-chart/values.yaml
+service:
+  type: ClusterIP
+  port: 80
 ```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
-</div>
-<div>
-
-```html
-<Tweet id="1390115482657726468" />
-```
-
-<Tweet id="1390115482657726468" scale="0.65" />
-
-</div>
-</div>
-
-
----
-class: px-20
 ---
 
-# Themes
-
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
-
-<div grid="~ cols-2 gap-2" m="-t-2">
-
-```yaml
----
-theme: default
----
-```
-
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true">
-
-</div>
-
-Read more about [How to use a theme](https://sli.dev/themes/use.html) and
-check out the [Awesome Themes Gallery](https://sli.dev/themes/gallery.html).
-
----
-preload: false
----
-
-# Animations
-
-Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
+# Live Demo
 
 ```html
 <div
@@ -228,7 +148,7 @@ Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
     />
   </div>
 
-  <div 
+  <div
     class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
     v-motion
     :initial="{ x: -80, opacity: 0}"
@@ -258,39 +178,10 @@ const final = {
   :initial="{ x:35, y: 40, opacity: 0}"
   :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
 
-[Learn More](https://sli.dev/guide/animations.html#motion)
-
 </div>
 
 ---
 
-# LaTeX
-
-LaTeX is supported out-of-box powered by [KaTeX](https://katex.org/).
-
-<br>
-
-Inline $\sqrt{3x-1}+(1+x)^2$
-
-Block
-$$
-\begin{array}{c}
-
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
-
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
-
-\nabla \cdot \vec{\mathbf{B}} & = 0
-
-\end{array}
-$$
-
-<br>
-
-[Learn more](https://sli.dev/guide/syntax#latex)
-
----
 
 # Diagrams
 

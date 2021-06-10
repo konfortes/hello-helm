@@ -40,5 +40,6 @@ helm install my-http-service konfortes/http-service
 ## Run Presentation
 
 ```bash
-
+cd helm-presentation
+slidev -o
 ```
