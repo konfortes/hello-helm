@@ -43,7 +43,7 @@ Interacts with remote repos and K8S cluster in order to manage charts and chart 
 
 ### Chart Repo
 
-A simple server that stores packaged charts. Those charts can be retrieved by the Helm client ((PyPI))
+A simple server that stores packaged charts. Those charts can be retrieved by the Helm client (PyPI)
 
 ### Chart
 
@@ -108,32 +108,28 @@ service:
 
 # Live Demo
 
-- Install community chart
-
-- Create your own chart
-
-- Demonstrate values
-
-- Debug a chart
-
-- Package & Deploy a chart
-
-- Install a release
-
-- Upgrade a release
+<ul>
+  <li v-click=1><b>Install community chart</b></li>
+  <li v-click=2><b>Create your own chart</b></li>
+  <li v-click=3><b>Demonstrate values</b></li>
+  <li v-click=4><b>Debug a chart</b></li>
+  <li v-click=5><b>Package & Deploy a chart</b></li>
+  <li v-click=6><b>Install a release</b></li>
+  <li v-click=7><b></b>Upgrade a release</li>
+</ul>
 
 <!--
-helm install demo-mysql stable/mysql
+1. helm install demo-mysql stable/mysql
 
-helm create stam
+2. helm create stam
 
-helm template stam source-charts/http-service
-helm install http-service1 source-charts/http-service --dry-run --debug --dry-run 2>&1 | less
+4. helm template stam source-charts/http-service
+4. helm install http-service1 source-charts/http-service --dry-run --debug --dry-run 2>&1 | less
 
-helm package -d http-service source-charts/http-service
-helm repo index --url https://konfortes.github.io/hello-helm/ .
+5. helm package -d http-service source-charts/http-service
+5. helm repo index --url https://konfortes.github.io/hello-helm/ .
 
-helm install http-service2 konfortes/http-service
+6. helm install http-service2 konfortes/http-service
 
-helm upgrade http-service2 konfortes/http-service
+7. helm upgrade http-service2 konfortes/http-service
 -->
