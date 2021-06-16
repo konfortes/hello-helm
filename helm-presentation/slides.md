@@ -1,17 +1,14 @@
 ---
-# try also 'default' to start simple
 theme: seriph
 background: https://dashboard.snapcraft.io/site_media/appmedia/2017/06/helm.png
-# apply any windi css classes to the current slide
-class: 'text-center'
-# https://sli.dev/custom/highlighters.html
+class: text-center
 highlighter: shiki
-# some information about the slides, markdown enabled
 info: |
   ## Slidev Starter Template
   Presentation slides for developers.
 
   Learn more at [Sli.dev](https://sli.dev)
+title: Helm
 ---
 
 # Helm
@@ -23,10 +20,6 @@ Package Manager for Kubernetes
     Let's Start <carbon:arrow-right class="inline"/>
   </span>
 </div>
-
-<!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
--->
 
 ---
 
@@ -110,18 +103,37 @@ service:
   type: ClusterIP
   port: 80
 ```
+
 ---
 
 # Live Demo
 
-- Create a Chart
+- Install community chart
 
-- Using the values
+- Create your own chart
 
-- Template a chart
+- Demonstrate values
 
-- Package a Chart
+- Debug a chart
 
-- Deploy a Chart
+- Package & Deploy a chart
 
----
+- Install a release
+
+- Upgrade a release
+
+<!--
+helm install demo-mysql stable/mysql
+
+helm create stam
+
+helm template stam source-charts/http-service
+helm install http-service1 source-charts/http-service --dry-run --debug --dry-run 2>&1 | less
+
+helm package -d http-service source-charts/http-service
+helm repo index --url https://konfortes.github.io/hello-helm/ .
+
+helm install http-service2 konfortes/http-service
+
+helm upgrade http-service2 konfortes/http-service
+-->

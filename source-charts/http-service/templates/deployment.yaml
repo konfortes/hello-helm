@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "http-service.fullname" . }}
+  name: {{ .Release.Name }}
   labels:
     {{- include "http-service.labels" . | nindent 4 }}
 spec:
